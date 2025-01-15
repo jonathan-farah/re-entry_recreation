@@ -25,14 +25,9 @@ contract ReentrancyTest is Test {
     // Test to simulate the reentrancy attack
     function testReentrancyAttack() public {
         // Starting the attack
-        console.log("Starting the attack...");
         vm.startPrank(address(attacker));
         attacker.attack{value: 1 ether}();
         vm.stopPrank();
-
-        // Final assertions
-        console.log("Attacker's balance after the attack: %s ether", address(attacker).balance);
-        console.log("Vulnerable contract's balance after the attack: %s ether", address(vault).balance);
 
         // Assert that the attacker drained the vulnerable contract
         assertEq(address(attacker).balance, 11 ether); // Attacker should have drained the vault (10 ether + 1 ether)
